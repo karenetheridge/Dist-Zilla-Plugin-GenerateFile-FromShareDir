@@ -64,9 +64,11 @@ around dump_config => sub
     my $config = $self->$orig;
 
     $config->{'' . __PACKAGE__} = {
-        '-dist' => $self->dist,
-        '-source_filename' => $self->source_filename,
-        '-destination_filename' => $self->filename,
+        # XXX FIXME - it seems META.* does not like the leading - in field
+        # names! something is wrong with the serialization process.
+        'dist' => $self->dist,
+        'source_filename' => $self->source_filename,
+        'destination_filename' => $self->filename,
         $self->_extra_args,
     };
     return $config;
