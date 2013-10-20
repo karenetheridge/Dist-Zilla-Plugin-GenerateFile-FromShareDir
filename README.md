@@ -4,7 +4,7 @@ Dist::Zilla::Plugin::GenerateFile::ShareDir - Create files in the build, based o
 
 # VERSION
 
-version 0.001
+version 0.002
 
 # SYNOPSIS
 
@@ -46,6 +46,11 @@ This plugin accepts the following options:
 
     The filename in the sharedir to use to generate the new file. Defaults to the
     same filename and path as `-destination_file`.
+
+- `-encoding`
+
+    The encoding of the source file; will also be used for the encoding of the
+    destination file. Defaults to UTF-8.
 
 - `arbitrary option`
 
