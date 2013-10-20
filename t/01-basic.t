@@ -14,7 +14,7 @@ use Test::File::ShareDir
     };
 
 my $tzil = Builder->from_config(
-    { dist_root => 't/corpus/basic' },
+    { dist_root => 't/does_not_exist' },
     {
         add_files => {
             'source/dist.ini' => simple_ini(
@@ -42,5 +42,6 @@ my $zilla_version = Dist::Zilla->VERSION;
 like($content, qr/^This file was generated with Dist::Zilla::Plugin::GenerateFile::ShareDir /, '$plugin is passed to the template');
 like($content, qr/Dist::Zilla $zilla_version/, '$zilla is passed to the template');
 like($content, qr/Le numéro de Maurice Richard est neuf./, 'arbitrary args are passed to the template');
+like($content, qr/¡And hello 김도형 - Keedi Kim!/, 'encoding looks good (hi 김도형)');
 
 done_testing;

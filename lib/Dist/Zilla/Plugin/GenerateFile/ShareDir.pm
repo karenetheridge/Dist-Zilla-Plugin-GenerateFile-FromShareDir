@@ -85,8 +85,7 @@ sub gather_files
 
     $self->add_file(Dist::Zilla::File::InMemory->new(
         name => $self->filename,
-        # TODO: slurp_utf8 and set encoding=utf8
-        content => path($file)->slurp_raw,
+        content => path($file)->slurp_utf8,
     ));
 }
 
@@ -97,17 +96,19 @@ sub munge_file
     return unless $file->name eq $self->filename;
     $self->log_debug([ 'updating contents of %s in memory', $file->name ]);
 
-    my $content = $file->content;
-    $file->content(
-        $self->fill_in_string(
-            $content,
-            {
-                $self->_extra_args,     # must be first
-                dist => \($self->zilla),
-                plugin => \$self,
-            },
-        )
+    my $content = $self->fill_in_string(
+        $file->content,
+        {
+            $self->_extra_args,     # must be first
+            dist => \($self->zilla),
+            plugin => \$self,
+        },
     );
+
+    # older Dist::Zilla wrote out all files :raw, so we need to encode
+    # manually here.
+    utf8::encode($content) if Dist::Zilla->VERSION < 5.000;
+    $file->content($content);
 }
 
 __PACKAGE__->meta->make_immutable;
