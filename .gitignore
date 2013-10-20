@@ -1,3 +1,4 @@
 /.build/
 !.gitignore
 /Dist-Zilla-Plugin-GenerateFile-ShareDir-*
+/todo/
