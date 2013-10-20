@@ -1,8 +1,10 @@
 This file was generated with {{ ref($plugin) . ' ' . ($plugin->VERSION || '<self>') }}
 and with the help of Dist::Zilla {{ $dist->VERSION }}.
 
-Les hivers de mon enfance Ã©taient des saisons longues, longues. Nous vivions
-en trois lieux: l'Ã©cole, l'Ã©glise et la patinoire; mais la vraie vie Ã©tait sur
+Les hivers de mon enfance �taient des saisons longues, longues. Nous vivions
+en trois lieux: l'�cole, l'�glise et la patinoire; mais la vraie vie �tait sur
 la patinoire.
 
-[Le numÃ©ro de Maurice Richard est {{ $numero }}.]
+[Le num�ro de Maurice Richard est {{ $numero }}.]
+
+

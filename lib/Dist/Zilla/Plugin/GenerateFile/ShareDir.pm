@@ -15,6 +15,7 @@ use MooseX::SlurpyConstructor;
 use Scalar::Util 'blessed';
 use File::ShareDir 'dist_file';
 use Path::Tiny;
+use Encode;
 use namespace::autoclean;
 
 has dist => (
@@ -35,6 +36,13 @@ has source_filename => (
     is => 'ro', isa => 'Str',
     lazy => 1,
     default => sub { shift->filename },
+);
+
+has encoding => (
+    init_arg => '-encoding',
+    is => 'ro', isa => 'Str',
+    lazy => 1,
+    default => 'UTF-8',
 );
 
 has _extra_args => (
@@ -67,6 +75,7 @@ around dump_config => sub
         # XXX FIXME - it seems META.* does not like the leading - in field
         # names! something is wrong with the serialization process.
         'dist' => $self->dist,
+        'encoding' => $self->encoding,
         'source_filename' => $self->source_filename,
         'destination_filename' => $self->filename,
         $self->_extra_args,
@@ -83,9 +92,13 @@ sub gather_files
     # this should die if the file does not exist
     my $file = dist_file($self->dist, $self->source_filename);
 
+    my $content = path($file)->slurp_raw;
+    $content = Encode::decode($self->encoding, $content, Encode::FB_CROAK());
+
     $self->add_file(Dist::Zilla::File::InMemory->new(
         name => $self->filename,
-        content => path($file)->slurp_utf8,
+        encoding => $self->encoding,    # only used in Dist::Zilla 5.000+
+        content => $content,
     ));
 }
 
@@ -105,9 +118,9 @@ sub munge_file
         },
     );
 
-    # older Dist::Zilla wrote out all files :raw, so we need to encode
-    # manually here.
-    utf8::encode($content) if Dist::Zilla->VERSION < 5.000;
+    # older Dist::Zilla wrote out all files :raw, so we need to encode manually here.
+    $content = Encode::encode($self->encoding, $content, Encode::FB_CROAK()) if Dist::Zilla->VERSION < 5.000;
+
     $file->content($content);
 }
 
@@ -164,6 +177,11 @@ The filename to generate in the distribution being built. Required.
 
 The filename in the sharedir to use to generate the new file. Defaults to the
 same filename and path as C<-destination_file>.
+
+=item * C<-encoding>
+
+The encoding of the source file; will also be used for the encoding of the
+destination file. Defaults to UTF-8.
 
 =item * C<arbitrary option>
 
