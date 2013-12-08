@@ -11,7 +11,7 @@ with (
     'Dist::Zilla::Role::TextTemplate',
 );
 
-use MooseX::SlurpyConstructor;
+use MooseX::SlurpyConstructor 1.2;
 use Scalar::Util 'blessed';
 use File::ShareDir 'dist_file';
 use Path::Tiny;
