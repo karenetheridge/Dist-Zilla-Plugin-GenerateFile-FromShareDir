@@ -4,7 +4,7 @@ Dist::Zilla::Plugin::GenerateFile::ShareDir - Create files in the build, based o
 
 # VERSION
 
-version 0.002
+version 0.003
 
 # SYNOPSIS
 
@@ -20,8 +20,8 @@ In your `dist.ini`:
 # DESCRIPTION
 
 Generates a file in your dist, indicated by `-destination_file`, based on the
-[Text::Template](http://search.cpan.org/perldoc?Text::Template) located in the `-source_file` of `-dist`'s
-[distribution sharedir](http://search.cpan.org/perldoc?File::ShareDir). Any extra config values are passed
+[Text::Template](https://metacpan.org/pod/Text::Template) located in the `-source_file` of `-dist`'s
+[distribution sharedir](https://metacpan.org/pod/File::ShareDir). Any extra config values are passed
 along to the template, in addition to `$zilla` and `$plugin` objects.
 
 I expect that usually the `-dist` that contains the template will be either a
@@ -34,8 +34,8 @@ This plugin accepts the following options:
 
 - `-dist`
 
-    The distribution name to use when finding the sharedir (see [File::ShareDir](http://search.cpan.org/perldoc?File::ShareDir)
-    and [Dist::Zilla::Plugin::ShareDir](http://search.cpan.org/perldoc?Dist::Zilla::Plugin::ShareDir)). Defaults to the dist corresponding to
+    The distribution name to use when finding the sharedir (see [File::ShareDir](https://metacpan.org/pod/File::ShareDir)
+    and [Dist::Zilla::Plugin::ShareDir](https://metacpan.org/pod/Dist::Zilla::Plugin::ShareDir)). Defaults to the dist corresponding to
     the running plugin.
 
 - `-destination_filename` or `-filename`
@@ -64,9 +64,9 @@ I am also usually active on irc, as 'ether' at `irc.perl.org`.
 
 # SEE ALSO
 
-- [File::ShareDir](http://search.cpan.org/perldoc?File::ShareDir)
-- [Dist::Zilla::Plugin::ShareDir](http://search.cpan.org/perldoc?Dist::Zilla::Plugin::ShareDir)
-- [Text::Template](http://search.cpan.org/perldoc?Text::Template)
+- [File::ShareDir](https://metacpan.org/pod/File::ShareDir)
+- [Dist::Zilla::Plugin::ShareDir](https://metacpan.org/pod/Dist::Zilla::Plugin::ShareDir)
+- [Text::Template](https://metacpan.org/pod/Text::Template)
 
 # AUTHOR
 
