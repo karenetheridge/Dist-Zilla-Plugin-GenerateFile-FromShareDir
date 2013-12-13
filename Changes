@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          - specify minimum Path::Tiny version needed for slurp_raw
 
 0.003     2013-12-08 17:34:21Z
           - bump prereq for MooseX::SlurpyConstructor to bypass old metaclass
