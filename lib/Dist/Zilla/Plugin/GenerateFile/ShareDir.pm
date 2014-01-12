@@ -152,7 +152,9 @@ along to the template, in addition to C<$zilla> and C<$plugin> objects.
 
 I expect that usually the C<-dist> that contains the template will be either a
 plugin bundle, so you can generate a custom-tailored file in your dist, or a
-plugin that subclasses this one.
+plugin that subclasses this one.  (Otherwise, you can just as easily use
+L<Dist::Zilla::Plugin::ShareDir|[GatherDir::Template]> to generate the file
+directly, without needing a sharedir.)
 
 =head1 OPTIONS
 
