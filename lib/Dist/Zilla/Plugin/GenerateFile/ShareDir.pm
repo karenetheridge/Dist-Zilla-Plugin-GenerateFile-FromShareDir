@@ -87,14 +87,13 @@ sub gather_files
 {
     my $self = shift;
 
-    require Dist::Zilla::File::InMemory;
-
     # this should die if the file does not exist
     my $file = dist_file($self->dist, $self->source_filename);
 
     my $content = path($file)->slurp_raw;
     $content = Encode::decode($self->encoding, $content, Encode::FB_CROAK());
 
+    require Dist::Zilla::File::InMemory;
     $self->add_file(Dist::Zilla::File::InMemory->new(
         name => $self->filename,
         encoding => $self->encoding,    # only used in Dist::Zilla 5.000+
