@@ -13,6 +13,11 @@ use Test::File::ShareDir
         -dist => { 'Some-Other-Dist' => 't/corpus' },
     };
 
+{
+    package Some::Other::Dist;
+    $Some::Other::Dist::VERSION = '2.0';
+}
+
 my $tzil = Builder->from_config(
     { dist_root => 't/does_not_exist' },
     {
@@ -42,6 +47,7 @@ my $zilla_version = Dist::Zilla->VERSION;
 
 like($content, qr/^This file was generated with Dist::Zilla::Plugin::GenerateFile::ShareDir /, '$plugin is passed to the template');
 like($content, qr/Dist::Zilla $zilla_version/, '$zilla is passed to the template');
+like($content, qr/Some-Other-Dist-2.0/, 'dist name can be fetched from the $plugin object');
 like($content, qr/Le numéro de Maurice Richard est neuf./, 'arbitrary args are passed to the template');
 
 done_testing;

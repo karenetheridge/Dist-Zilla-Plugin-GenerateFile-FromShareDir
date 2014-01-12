@@ -2,6 +2,8 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
           - specify minimum Path::Tiny version needed for slurp_raw
+          - fix test that broke with Dist::Zilla 5.010, where internal testing
+            zillas have no $VERSION
 
 0.003     2013-12-08 17:34:21Z
           - bump prereq for MooseX::SlurpyConstructor to bypass old metaclass
