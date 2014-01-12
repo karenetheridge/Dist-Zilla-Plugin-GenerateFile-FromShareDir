@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.004     2014-01-12 21:10:11Z
           - specify minimum Path::Tiny version needed for slurp_raw
           - fix test that broke with Dist::Zilla 5.010, where internal testing
             zillas have no $VERSION

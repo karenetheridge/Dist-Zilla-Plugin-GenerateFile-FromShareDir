@@ -4,7 +4,7 @@ Dist::Zilla::Plugin::GenerateFile::ShareDir - Create files in the build, based o
 
 # VERSION
 
-version 0.003
+version 0.004
 
 # SYNOPSIS
 
@@ -26,7 +26,9 @@ along to the template, in addition to `$zilla` and `$plugin` objects.
 
 I expect that usually the `-dist` that contains the template will be either a
 plugin bundle, so you can generate a custom-tailored file in your dist, or a
-plugin that subclasses this one.
+plugin that subclasses this one.  (Otherwise, you can just as easily use
+[Dist::Zilla::Plugin::ShareDir](https://metacpan.org/pod/[GatherDir::Template]) to generate the file
+directly, without needing a sharedir.)
 
 # OPTIONS
 
