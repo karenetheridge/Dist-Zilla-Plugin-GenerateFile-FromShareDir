@@ -4,7 +4,7 @@ Dist::Zilla::Plugin::GenerateFile::ShareDir - Create files in the build, based o
 
 # VERSION
 
-version 0.004
+version 0.005
 
 # SYNOPSIS
 

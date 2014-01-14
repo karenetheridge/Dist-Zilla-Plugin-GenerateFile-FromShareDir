@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.005     2014-01-14 05:38:04Z
           - remove code in test templates that required perl 5.16
 
 0.004     2014-01-12 21:10:11Z
