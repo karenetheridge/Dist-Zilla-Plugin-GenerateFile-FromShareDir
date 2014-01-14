@@ -1,6 +1,6 @@
 This file was generated with {{ ref($plugin) . ' ' . ($plugin->VERSION || '<self>') }}
 from a template file originating in {{
-    my $module = $plugin->dist =~ s/-/::/gr;
+    (my $module = $plugin->dist) =~ s/-/::/g;
     eval "require $module";
     $plugin->dist . '-' . $module->VERSION
 }} and with the help of Dist::Zilla {{ $dist->VERSION || eval '$' . ref($dist) . '::ISA[0]->VERSION' }}.
