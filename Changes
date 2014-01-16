@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          - fix pod errors
 
 0.005     2014-01-14 05:38:04Z
           - remove code in test templates that required perl 5.16
