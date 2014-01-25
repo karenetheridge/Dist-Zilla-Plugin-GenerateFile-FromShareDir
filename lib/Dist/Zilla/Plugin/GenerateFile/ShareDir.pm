@@ -12,7 +12,6 @@ with (
 );
 
 use MooseX::SlurpyConstructor 1.2;
-use Scalar::Util 'blessed';
 use File::ShareDir 'dist_file';
 use Path::Tiny 0.04;
 use Encode;
@@ -22,7 +21,7 @@ has dist => (
     is => 'ro', isa => 'Str',
     init_arg => '-dist',
     lazy => 1,
-    default => sub { (my $dist = blessed(shift)) =~ s/::/-/g; $dist },
+    default => sub {(my $dist = shift->meta->name) =~ s/::/-/g; $dist },
 );
 
 has filename => (
