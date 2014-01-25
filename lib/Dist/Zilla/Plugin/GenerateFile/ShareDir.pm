@@ -154,6 +154,7 @@ I expect that usually the C<-dist> that contains the template will be either a
 plugin bundle, so you can generate a custom-tailored file in your dist, or a
 plugin that subclasses this one.  (Otherwise, you can just as easily use
 L<[GatherDir::Template]|Dist::Zilla::Plugin::GatherDir::Template>
+or L<[GenerateFile]|Dist::Zilla::Plugin::GenerateFile>
 to generate the file directly, without needing a sharedir.)
 
 =head1 OPTIONS
@@ -202,9 +203,13 @@ I am also usually active on irc, as 'ether' at C<irc.perl.org>.
 
 =begin :list
 
+=for stopwords templated
+
 * L<File::ShareDir>
 * L<Dist::Zilla::Plugin::ShareDir>
 * L<Text::Template>
+* L<[GatherDir::Template]|Dist::Zilla::Plugin::GatherDir::Template> - gather a file from the dist, and then pass it through a template
+* L<[GenerateFile]|Dist::Zilla::Plugin::GenerateFile> - generate a (possibly-templated) file purely based on data in F<dist.ini>
 
 =end :list
 
