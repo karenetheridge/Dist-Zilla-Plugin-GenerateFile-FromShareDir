@@ -15,9 +15,9 @@ Revision history for {{$dist->name}}
           - bump prereq for MooseX::SlurpyConstructor to bypass old metaclass
             issues
 
-0.002     2013-10-20 23:35:59Z (Karen Etheridge)
+0.002     2013-10-20 23:35:59Z
           - new "encoding" option - works with versions of Dist::Zilla both
             before and after 5.000
 
-0.001     2013-10-12 18:05:08Z (Karen Etheridge)
+0.001     2013-10-12 18:05:08Z
           - Initial release.
