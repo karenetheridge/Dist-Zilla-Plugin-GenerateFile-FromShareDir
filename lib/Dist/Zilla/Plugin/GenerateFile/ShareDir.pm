@@ -200,16 +200,13 @@ I am also usually active on irc, as 'ether' at C<irc.perl.org>.
 
 =head1 SEE ALSO
 
-=begin :list
-
 =for stopwords templated
 
+=for :list
 * L<File::ShareDir>
 * L<Dist::Zilla::Plugin::ShareDir>
 * L<Text::Template>
 * L<[GatherDir::Template]|Dist::Zilla::Plugin::GatherDir::Template> - gather a file from the dist, and then pass it through a template
 * L<[GenerateFile]|Dist::Zilla::Plugin::GenerateFile> - generate a (possibly-templated) file purely based on data in F<dist.ini>
-
-=end :list
 
 =cut
