@@ -131,6 +131,9 @@ __END__
     gather_files
     munge_file
 
+=for :header
+=for stopwords sharedir
+
 =head1 SYNOPSIS
 
 In your F<dist.ini>:
@@ -163,8 +166,6 @@ This plugin accepts the following options:
 =over 4
 
 =item * C<-dist>
-
-=for stopwords sharedir
 
 The distribution name to use when finding the sharedir (see L<File::ShareDir>
 and L<Dist::Zilla::Plugin::ShareDir>). Defaults to the dist corresponding to
