@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Dist::Zilla::Plugin::GenerateFile::ShareDir;
 # ABSTRACT: Create files in the build, based on a template located in a dist sharedir
-# vim: set ts=8 sw=4 tw=78 et :
+# vim: set ts=8 sts=4 sw=4 tw=78 et :
 
 our $VERSION = '0.006';
 
