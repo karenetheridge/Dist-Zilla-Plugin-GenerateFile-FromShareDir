@@ -35,6 +35,7 @@ my $tzil = Builder->from_config(
     },
 );
 
+$tzil->chrome->logger->set_debug(1);
 $tzil->build;
 
 my $build_dir = $tzil->tempdir->subdir('build');
@@ -49,5 +50,8 @@ like($content, qr/^This file was generated with Dist::Zilla::Plugin::GenerateFil
 like($content, qr/Dist::Zilla $zilla_version/, '$zilla is passed to the template');
 like($content, qr/Some-Other-Dist-2.0/, 'dist name can be fetched from the $plugin object');
 like($content, qr/Le numéro de Maurice Richard est neuf./, 'arbitrary args are passed to the template');
+
+diag 'got log messages: ', explain $tzil->log_messages
+    if not Test::Builder->new->is_passing;
 
 done_testing;
