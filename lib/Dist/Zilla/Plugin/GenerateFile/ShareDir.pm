@@ -167,29 +167,25 @@ to generate the file directly, without needing a sharedir.)
 All unrecognized keys/values will be passed to the template as is.
 Recognized options are:
 
-=over 4
-
-=item * C<-dist>
+=head2 C<-dist>
 
 The distribution name to use when finding the sharedir (see L<File::ShareDir>
 and L<Dist::Zilla::Plugin::ShareDir>). Defaults to the dist corresponding to
 the running plugin.
 
-=item * C<-destination_filename> or C<-filename>
+=head2 C<-destination_filename> or C<-filename>
 
 The filename to generate in the distribution being built. Required.
 
-=item * C<-source_filename>
+=head2 C<-source_filename>
 
 The filename in the sharedir to use to generate the new file. Defaults to the
 same filename and path as C<-destination_file>.
 
-=item * C<-encoding>
+=head2 C<-encoding>
 
 The encoding of the source file; will also be used for the encoding of the
 destination file. Defaults to UTF-8.
-
-=back
 
 =head1 SUPPORT
 
