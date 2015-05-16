@@ -164,7 +164,8 @@ to generate the file directly, without needing a sharedir.)
 
 =head1 OPTIONS
 
-This plugin accepts the following options:
+All unrecognized keys/values will be passed to the template as is.
+Recognized options are:
 
 =over 4
 
@@ -187,10 +188,6 @@ same filename and path as C<-destination_file>.
 
 The encoding of the source file; will also be used for the encoding of the
 destination file. Defaults to UTF-8.
-
-=item * C<arbitrary option>
-
-All other keys/values provided will be passed to the template as is.
 
 =back
 
