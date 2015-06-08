@@ -4,6 +4,8 @@ package Dist::Zilla::Plugin::GenerateFile::ShareDir;
 # ABSTRACT: Create files in the build, based on a template located in a dist sharedir
 # vim: set ts=8 sw=4 tw=78 et :
 
+our $VERSION = '0.006';
+
 use Moose;
 with (
     'Dist::Zilla::Role::FileGatherer',
