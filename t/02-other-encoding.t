@@ -6,7 +6,10 @@ use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::DZil;
 use Path::Tiny;
 use utf8;
-binmode $_, ':utf8' foreach map { Test::Builder->new->$_ } qw(output failure_output);
+
+binmode $_, ':encoding(UTF-8)' foreach map { Test::Builder->new->$_ } qw(output failure_output todo_output);
+binmode STDOUT, ':encoding(UTF-8)';
+binmode STDERR, ':encoding(UTF-8)';
 
 use Test::File::ShareDir
     -share => {
