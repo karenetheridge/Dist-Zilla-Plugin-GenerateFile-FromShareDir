@@ -12,13 +12,17 @@ with (
     'Dist::Zilla::Role::FileGatherer',
     'Dist::Zilla::Role::FileMunger',
     'Dist::Zilla::Role::TextTemplate',
+    'Dist::Zilla::Role::AfterBuild',
+    'Dist::Zilla::Role::AfterRelease',
 );
 
+use Carp qw( croak );
 use MooseX::SlurpyConstructor 1.2;
 use Moose::Util 'find_meta';
 use File::ShareDir 'dist_file';
 use Path::Tiny 0.04;
 use Encode;
+use Moose::Util::TypeConstraints qw( enum );
 use namespace::autoclean;
 
 has dist => (
@@ -46,6 +50,30 @@ has encoding => (
     is => 'ro', isa => 'Str',
     lazy => 1,
     default => 'UTF-8',
+);
+
+has location => (
+    init_arg => '-location',
+    is       => 'ro',
+    isa      => enum( [qw( build root )] ),
+    lazy     => 1,
+    default  => 'build',
+);
+
+has phase => (
+    init_arg => '-phase',
+    is       => 'ro',
+    isa      => enum( [qw( build release )] ),
+    lazy     => 1,
+    default  => 'release',
+);
+
+has _stashed_files => (
+    isa      => 'ArrayRef',
+    init_arg => undef,
+    is       => 'ro',
+    lazy     => 1,
+    default  => sub { [] },
 );
 
 has _extra_args => (
@@ -81,6 +109,8 @@ around dump_config => sub
         'encoding' => $self->encoding,
         'source_filename' => $self->source_filename,
         'destination_filename' => $self->filename,
+        'location' => $self->location,
+        'phase' => $self->phase,
         $self->_extra_args,
     };
     return $config;
@@ -91,18 +121,40 @@ sub gather_files
     my $self = shift;
 
     # this should die if the file does not exist
-    my $file = dist_file($self->dist, $self->source_filename);
+    my $file_path = dist_file($self->dist, $self->source_filename);
 
-    my $content = path($file)->slurp_raw;
+    my $content = path($file_path)->slurp_raw;
     $content = Encode::decode($self->encoding, $content, Encode::FB_CROAK());
 
     require Dist::Zilla::File::InMemory;
-    $self->add_file(Dist::Zilla::File::InMemory->new(
+    my $file = Dist::Zilla::File::InMemory->new(
         name => $self->filename,
         encoding => $self->encoding,    # only used in Dist::Zilla 5.000+
         content => $content,
-    ));
+    );
+    if ( 'build' eq $self->location ) {
+        $self->add_file($file);
+        return;
+    }
+
+    # root eq $self->location
+    push @{ $self->_stashed_files }, $file;
+    return;
 }
+
+around munge_files => sub
+{
+    my ( $orig, $self, @args ) = @_;
+    return $self->$orig(@args) if 'build' eq $self->location;
+    for my $file ( @{ $self->_stashed_files } ) {
+        if ( $file->is_bytes ) {
+            $self->log_debug(
+                $file->name . " has 'bytes' encoding, skipping..." );
+            next;
+        }
+        $self->munge_file($file);
+    }
+};
 
 sub munge_file
 {
@@ -126,6 +178,43 @@ sub munge_file
     $file->content($content);
 }
 
+sub after_build
+{
+    my ($self) = @_;
+    return unless $self->location eq 'root';
+    return unless $self->phase eq 'build';
+    $self->_write_file_root($_) for @{ $self->_stashed_files };
+}
+
+sub after_release
+{
+    my ($self) = @_;
+    return unless $self->location eq 'root';
+    return unless $self->phase eq 'release';
+    $self->_write_file_root($_) for @{ $self->_stashed_files };
+}
+
+# That I have to write this clearly says something is wrong.
+sub _write_file_root
+{
+    my ( $self, $file ) = @_;
+
+    # Appropriated from Dist::Zilla::write_out_file and then made work with root
+    # Okay, this is a bit much, until we have ->debug. -- rjbs, 2008-06-13
+    # $self->log("writing out " . $file->name);
+
+    my $file_path = path( $file->name );
+    my $to        = path( $self->zilla->root )->child($file_path);
+    my $to_dir    = $to->parent;
+    $to_dir->mkpath unless -e $to_dir;
+
+    croak "not a directory: $to_dir" unless -d $to_dir;
+
+    $self->log_debug("Overwriting $to");
+    # Ugh... I'm not even sure if this is write, see DZIL < 5 remarks.
+    $to->spew_raw( $file->content );
+    chmod $file->mode, "$to" or croak "couldn't chmod $to: $!";
+}
 __PACKAGE__->meta->make_immutable;
 __END__
 
