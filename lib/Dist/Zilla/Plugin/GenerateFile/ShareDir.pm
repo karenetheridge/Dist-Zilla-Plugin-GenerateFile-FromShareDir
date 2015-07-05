@@ -195,11 +195,11 @@ sub after_release
 }
 
 # That I have to write this clearly says something is wrong.
+# Appropriated from Dist::Zilla::_write_out_file and then made to work with root
 sub _write_file_root
 {
     my ( $self, $file ) = @_;
 
-    # Appropriated from Dist::Zilla::write_out_file and then made work with root
     $self->log_debug([ 'writing out %s', $file->name ]);
 
     my $file_path = path( $file->name );
