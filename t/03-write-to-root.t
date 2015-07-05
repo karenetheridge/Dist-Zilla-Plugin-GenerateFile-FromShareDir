@@ -5,6 +5,7 @@ use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::DZil;
 use Path::Tiny;
+use Test::Deep;
 use utf8;
 
 binmode $_, ':encoding(UTF-8)' foreach map { Test::Builder->new->$_ } qw(output failure_output todo_output);
@@ -26,6 +27,7 @@ my $tzil = Builder->from_config(
     {
         add_files => {
             path(qw(source dist.ini)) => simple_ini(
+                'MetaConfig',
                 [ 'GenerateFile::ShareDir' => {
                     '-dist' => 'Some-Other-Dist',
                     '-source_filename' => 'template.txt',
@@ -59,6 +61,32 @@ like($content, qr/Dist::Zilla $zilla_version/, '$zilla is passed to the template
 like($content, qr/Some-Other-Dist-2.0/, 'dist name can be fetched from the $plugin object');
 like($content, qr/Le numéro de Maurice Richard est neuf./, 'arbitrary args are passed to the template');
 like($content, qr/¡And hello 김도형 - Keedi Kim!/, 'encoding looks good (hi 김도형)');
+
+cmp_deeply(
+    $tzil->distmeta,
+    superhashof({
+        x_Dist_Zilla => superhashof({
+            plugins => supersetof({
+                class => 'Dist::Zilla::Plugin::GenerateFile::ShareDir',
+                config => superhashof({
+                    'Dist::Zilla::Plugin::GenerateFile::ShareDir' => {
+                        dist => 'Some-Other-Dist',
+                        encoding => 'UTF-8',
+                        source_filename => 'template.txt',
+                        destination_filename => 'data/useless_file.txt',
+                        location => 'root',
+                        phase => 'build',
+                        numero => 'neuf',
+                    },
+                }),
+                name => 'GenerateFile::ShareDir',
+                version => Dist::Zilla::Plugin::GenerateFile::ShareDir->VERSION,
+            }),
+        }),
+    }),
+    'config is properly included in metadata',
+)
+or diag 'got distmeta: ', explain $tzil->distmeta;
 
 diag 'got log messages: ', explain $tzil->log_messages
     if not Test::Builder->new->is_passing;

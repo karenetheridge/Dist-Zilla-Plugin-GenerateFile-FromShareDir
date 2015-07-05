@@ -110,7 +110,7 @@ around dump_config => sub
         'source_filename' => $self->source_filename,
         'destination_filename' => $self->filename,
         'location' => $self->location,
-        'phase' => $self->phase,
+        $self->location eq 'root' ? ( 'phase' => $self->phase ) : (),
         $self->_extra_args,
     };
     return $config;
