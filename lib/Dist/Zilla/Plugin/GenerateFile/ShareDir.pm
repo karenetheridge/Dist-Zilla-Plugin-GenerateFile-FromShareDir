@@ -148,8 +148,7 @@ around munge_files => sub
     return $self->$orig(@args) if 'build' eq $self->location;
     for my $file ( @{ $self->_stashed_files } ) {
         if ( $file->is_bytes ) {
-            $self->log_debug(
-                $file->name . " has 'bytes' encoding, skipping..." );
+            $self->log_debug([ '%s has \'bytes\' encoding, skipping...', $file->name ]);
             next;
         }
         $self->munge_file($file);
@@ -200,8 +199,7 @@ sub _write_file_root
     my ( $self, $file ) = @_;
 
     # Appropriated from Dist::Zilla::write_out_file and then made work with root
-    # Okay, this is a bit much, until we have ->debug. -- rjbs, 2008-06-13
-    # $self->log("writing out " . $file->name);
+    $self->log_debug([ 'writing out %s', $file->name ]);
 
     my $file_path = path( $file->name );
     my $to        = path( $self->zilla->root )->child($file_path);
@@ -210,7 +208,7 @@ sub _write_file_root
 
     croak "not a directory: $to_dir" unless -d $to_dir;
 
-    $self->log_debug("Overwriting $to");
+    $self->log_debug([ 'Overwriting %s', $to ]);
     # Ugh... I'm not even sure if this is write, see DZIL < 5 remarks.
     $to->spew_raw( $file->content );
     chmod $file->mode, "$to" or croak "couldn't chmod $to: $!";
