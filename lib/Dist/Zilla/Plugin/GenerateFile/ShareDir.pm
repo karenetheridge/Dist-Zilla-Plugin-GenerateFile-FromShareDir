@@ -5,7 +5,7 @@ package Dist::Zilla::Plugin::GenerateFile::ShareDir;
 # KEYWORDS: plugin distribution generate create file sharedir template
 # vim: set ts=8 sts=4 sw=4 tw=115 et :
 
-our $VERSION = '0.006';
+our $VERSION = '0.007';
 
 use Moose;
 with (
