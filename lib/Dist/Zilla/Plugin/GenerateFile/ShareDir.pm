@@ -223,6 +223,8 @@ __END__
 =for Pod::Coverage::TrustPod
     gather_files
     munge_file
+    after_build
+    after_release
 
 =for :header
 =for stopwords sharedir
