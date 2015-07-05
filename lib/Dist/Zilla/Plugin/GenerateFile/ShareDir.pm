@@ -277,6 +277,20 @@ same filename and path as C<-destination_file>.
 The encoding of the source file; will also be used for the encoding of the
 destination file. Defaults to UTF-8.
 
+=head2 C<-location>
+
+default: C<build>
+
+The target location of the generated file. When C<build>, the file is added to
+the distribution in the normal file gathering phase. When C<root>, the file is
+instead written to the source repository.
+
+=head2 C<-phase>
+
+Only relevant when C<-location = root>. When C<build> (the default), the file
+is written on every build operation. When C<release>, it is only written after
+the distribution is released.
+
 =head1 SUPPORT
 
 =for stopwords irc

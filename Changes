@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Plugin-GenerateFile-ShareDir
 
 {{$NEXT}}
           - fix pod errors
+          - add new configuration options "-location" and "-phase", for
+            allowing file generation to the repository rather than the build
+            (Kent Fredric, PR#1)
 
 0.005     2014-01-14 05:38:04Z
           - remove code in test templates that required perl 5.16
