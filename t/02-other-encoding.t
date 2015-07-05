@@ -11,10 +11,7 @@ binmode $_, ':encoding(UTF-8)' foreach map { Test::Builder->new->$_ } qw(output 
 binmode STDOUT, ':encoding(UTF-8)';
 binmode STDERR, ':encoding(UTF-8)';
 
-use Test::File::ShareDir
-    -share => {
-        -dist => { 'Some-Other-Dist' => 't/corpus' },
-    };
+use Test::File::ShareDir -share => { -dist => { 'Some-Other-Dist' => 't/corpus' } };
 
 {
     package Some::Other::Dist;

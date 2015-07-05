@@ -12,10 +12,7 @@ binmode $_, ':encoding(UTF-8)' foreach map { Test::Builder->new->$_ } qw(output 
 binmode STDOUT, ':encoding(UTF-8)';
 binmode STDERR, ':encoding(UTF-8)';
 
-use Test::File::ShareDir
-    -share => {
-        -dist => { 'Some-Other-Dist' => 't/corpus' },
-    };
+use Test::File::ShareDir -share => { -dist => { 'Some-Other-Dist' => 't/corpus' } };
 
 {
     package Some::Other::Dist;
@@ -45,19 +42,17 @@ $tzil->chrome->logger->set_debug(1);
 $tzil->build;
 
 my $build_dir = $tzil->tempdir->subdir('build');
-my $nonfile = path( $build_dir, 'data', 'useless_file.txt' );
-ok( !-e $nonfile, 'file not created in build' );
+my $nonfile = path($build_dir, 'data', 'useless_file.txt');
+ok(!-e $nonfile, 'file not created in build');
 
 my $source_dir = $tzil->tempdir->subdir('source');
-my $file = path( $source_dir, 'data', 'useless_file.txt' );
-ok( -e $file, 'file created in source' );
+my $file = path($source_dir, 'data', 'useless_file.txt');
+ok(-e $file, 'file created in source');
 
 my $content = $file->slurp_utf8;
 
-my $zilla_version = Dist::Zilla->VERSION;
-
 like($content, qr/^This file was generated with Dist::Zilla::Plugin::GenerateFile::ShareDir /, '$plugin is passed to the template');
-like($content, qr/Dist::Zilla $zilla_version/, '$zilla is passed to the template');
+like($content, qr/Dist::Zilla $Dist::Zilla::VERSION/, '$zilla is passed to the template');
 like($content, qr/Some-Other-Dist-2.0/, 'dist name can be fetched from the $plugin object');
 like($content, qr/Le numéro de Maurice Richard est neuf./, 'arbitrary args are passed to the template');
 like($content, qr/¡And hello 김도형 - Keedi Kim!/, 'encoding looks good (hi 김도형)');

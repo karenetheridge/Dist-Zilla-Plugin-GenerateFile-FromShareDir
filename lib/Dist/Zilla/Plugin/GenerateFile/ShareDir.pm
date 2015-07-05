@@ -16,20 +16,20 @@ with (
     'Dist::Zilla::Role::AfterRelease',
 );
 
-use Carp qw( croak );
+use Carp 'croak';
 use MooseX::SlurpyConstructor 1.2;
 use Moose::Util 'find_meta';
 use File::ShareDir 'dist_file';
 use Path::Tiny 0.04;
 use Encode;
-use Moose::Util::TypeConstraints qw( enum );
+use Moose::Util::TypeConstraints 'enum';
 use namespace::autoclean;
 
 has dist => (
     is => 'ro', isa => 'Str',
     init_arg => '-dist',
     lazy => 1,
-    default => sub {(my $dist = find_meta(shift)->name) =~ s/::/-/g; $dist },
+    default => sub { (my $dist = find_meta(shift)->name) =~ s/::/-/g; $dist },
 );
 
 has filename => (
@@ -53,19 +53,17 @@ has encoding => (
 );
 
 has location => (
+    is => 'ro', isa => enum([ qw(build root) ]),
+    lazy => 1,
+    default => 'build',
     init_arg => '-location',
-    is       => 'ro',
-    isa      => enum( [qw( build root )] ),
-    lazy     => 1,
-    default  => 'build',
 );
 
 has phase => (
+    is => 'ro', isa => enum([ qw(build release) ]),
+    lazy => 1,
+    default => 'release',
     init_arg => '-phase',
-    is       => 'ro',
-    isa      => enum( [qw( build release )] ),
-    lazy     => 1,
-    default  => 'release',
 );
 
 has _stashed_files => (
@@ -132,7 +130,9 @@ sub gather_files
         encoding => $self->encoding,    # only used in Dist::Zilla 5.000+
         content => $content,
     );
-    if ( 'build' eq $self->location ) {
+
+    if ($self->location eq 'build')
+    {
         $self->add_file($file);
         return;
     }
@@ -144,9 +144,12 @@ sub gather_files
 
 around munge_files => sub
 {
-    my ( $orig, $self, @args ) = @_;
-    return $self->$orig(@args) if 'build' eq $self->location;
-    for my $file ( @{ $self->_stashed_files } ) {
+    my ($orig, $self, @args) = @_;
+
+    return $self->$orig(@args) if $self->location eq 'build';
+
+    for my $file (@{ $self->_stashed_files })
+    {
         if ($file->can('is_bytes') and $file->is_bytes)
         {
             $self->log_debug([ '%s has \'bytes\' encoding, skipping...', $file->name ]);
@@ -180,7 +183,7 @@ sub munge_file
 
 sub after_build
 {
-    my ($self) = @_;
+    my $self = shift;
     return unless $self->location eq 'root';
     return unless $self->phase eq 'build';
     $self->_write_file_root($_) for @{ $self->_stashed_files };
@@ -188,7 +191,7 @@ sub after_build
 
 sub after_release
 {
-    my ($self) = @_;
+    my $self = shift;
     return unless $self->location eq 'root';
     return unless $self->phase eq 'release';
     $self->_write_file_root($_) for @{ $self->_stashed_files };
@@ -198,12 +201,12 @@ sub after_release
 # Appropriated from Dist::Zilla::_write_out_file and then made to work with root
 sub _write_file_root
 {
-    my ( $self, $file ) = @_;
+    my ($self, $file) = @_;
 
     $self->log_debug([ 'writing out %s', $file->name ]);
 
-    my $file_path = path( $file->name );
-    my $to        = path( $self->zilla->root )->child($file_path);
+    my $file_path = path($file->name);
+    my $to        = path($self->zilla->root)->child($file_path);
     my $to_dir    = $to->parent;
     $to_dir->mkpath unless -e $to_dir;
 
@@ -215,6 +218,7 @@ sub _write_file_root
 
     chmod $file->mode, "$to" or croak "couldn't chmod $to: $!";
 }
+
 __PACKAGE__->meta->make_immutable;
 __END__
 
