@@ -28,8 +28,7 @@ my $tzil = Builder->from_config(
             path(qw(source dist.ini)) => simple_ini(
                 [ 'GenerateFile::ShareDir' => {
                     '-dist' => 'Some-Other-Dist',
-                    '-encoding' => 'Latin1',
-                    '-source_filename' => 'template_latin1.txt',
+                    '-source_filename' => 'template.txt',
                     '-destination_filename' => 'data/useless_file.txt',
                     '-location' => 'root',
                     '-phase' => 'build',
@@ -51,7 +50,7 @@ my $source_dir = $tzil->tempdir->subdir('source');
 my $file = path( $source_dir, 'data', 'useless_file.txt' );
 ok( -e $file, 'file created in source' );
 
-my $content = Encode::decode('Latin1', $file->slurp_raw, Encode::FB_CROAK());
+my $content = $file->slurp_utf8;
 
 my $zilla_version = Dist::Zilla->VERSION;
 
@@ -59,6 +58,7 @@ like($content, qr/^This file was generated with Dist::Zilla::Plugin::GenerateFil
 like($content, qr/Dist::Zilla $zilla_version/, '$zilla is passed to the template');
 like($content, qr/Some-Other-Dist-2.0/, 'dist name can be fetched from the $plugin object');
 like($content, qr/Le numéro de Maurice Richard est neuf./, 'arbitrary args are passed to the template');
+like($content, qr/¡And hello 김도형 - Keedi Kim!/, 'encoding looks good (hi 김도형)');
 
 diag 'got log messages: ', explain $tzil->log_messages
     if not Test::Builder->new->is_passing;

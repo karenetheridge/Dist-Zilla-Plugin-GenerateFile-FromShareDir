@@ -147,7 +147,8 @@ around munge_files => sub
     my ( $orig, $self, @args ) = @_;
     return $self->$orig(@args) if 'build' eq $self->location;
     for my $file ( @{ $self->_stashed_files } ) {
-        if ( $file->is_bytes ) {
+        if ($file->can('is_bytes') and $file->is_bytes)
+        {
             $self->log_debug([ '%s has \'bytes\' encoding, skipping...', $file->name ]);
             next;
         }
@@ -172,7 +173,7 @@ sub munge_file
     );
 
     # older Dist::Zilla wrote out all files :raw, so we need to encode manually here.
-    $content = Encode::encode($self->encoding, $content, Encode::FB_CROAK()) if Dist::Zilla->VERSION < 5.000;
+    $content = Encode::encode($self->encoding, $content, Encode::FB_CROAK()) if not $file->can('encoded_content');
 
     $file->content($content);
 }
@@ -209,8 +210,9 @@ sub _write_file_root
     croak "not a directory: $to_dir" unless -d $to_dir;
 
     $self->log_debug([ 'Overwriting %s', $to ]);
-    # Ugh... I'm not even sure if this is write, see DZIL < 5 remarks.
-    $to->spew_raw( $file->content );
+    # we already encoded the content in munge_file if on older Dist::Zilla
+    $to->spew_raw($file->can('encoded_content') ? $file->encoded_content : $file->content);
+
     chmod $file->mode, "$to" or croak "couldn't chmod $to: $!";
 }
 __PACKAGE__->meta->make_immutable;
