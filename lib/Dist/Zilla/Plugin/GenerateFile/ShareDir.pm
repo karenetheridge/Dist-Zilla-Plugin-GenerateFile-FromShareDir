@@ -109,6 +109,7 @@ around dump_config => sub
         'destination_filename' => $self->filename,
         'location' => $self->location,
         $self->location eq 'root' ? ( 'phase' => $self->phase ) : (),
+        blessed($self) ne __PACKAGE__ ? ( version => $VERSION ) : (),
         $self->_extra_args,
     };
     return $config;
