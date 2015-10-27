@@ -100,7 +100,7 @@ around dump_config => sub
     my ($orig, $self) = @_;
     my $config = $self->$orig;
 
-    $config->{'' . __PACKAGE__} = {
+    $config->{+__PACKAGE__} = {
         # XXX FIXME - it seems META.* does not like the leading - in field
         # names! something is wrong with the serialization process.
         'dist' => $self->dist,
