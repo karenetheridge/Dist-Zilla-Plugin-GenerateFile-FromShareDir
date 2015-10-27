@@ -12,6 +12,7 @@ with (
     'Dist::Zilla::Role::FileGatherer',
     'Dist::Zilla::Role::FileMunger',
     'Dist::Zilla::Role::TextTemplate',
+    'Dist::Zilla::Role::RepoFileInjector',
     'Dist::Zilla::Role::AfterBuild',
     'Dist::Zilla::Role::AfterRelease',
 );
@@ -63,14 +64,6 @@ has phase => (
     lazy => 1,
     default => 'release',
     init_arg => '-phase',
-);
-
-has _stashed_files => (
-    isa      => 'ArrayRef',
-    init_arg => undef,
-    is       => 'ro',
-    lazy     => 1,
-    default  => sub { [] },
 );
 
 has _extra_args => (
@@ -134,11 +127,12 @@ sub gather_files
     if ($self->location eq 'build')
     {
         $self->add_file($file);
-        return;
     }
-
-    # root eq $self->location
-    push @{ $self->_stashed_files }, $file;
+    else
+    {
+        # root eq $self->location
+        $self->add_repo_file($file);
+    }
     return;
 }
 
@@ -148,7 +142,7 @@ around munge_files => sub
 
     return $self->$orig(@args) if $self->location eq 'build';
 
-    for my $file (@{ $self->_stashed_files })
+    for my $file ($self->_repo_files)
     {
         if ($file->can('is_bytes') and $file->is_bytes)
         {
@@ -184,26 +178,13 @@ sub munge_file
 sub after_build
 {
     my $self = shift;
-    return unless $self->location eq 'root';
-    return unless $self->phase eq 'build';
-    $self->_write_file_root($_) for @{ $self->_stashed_files };
+    $self->write_repo_files if $self->phase eq 'build';
 }
 
 sub after_release
 {
     my $self = shift;
-    return unless $self->location eq 'root';
-    return unless $self->phase eq 'release';
-    $self->_write_file_root($_) for @{ $self->_stashed_files };
-}
-
-sub _write_file_root
-{
-    my ($self, $file) = @_;
-
-    $self->log_debug([ 'writing out %s', $file->name ]);
-
-    $self->zilla->_write_out_file($file, $self->zilla->root);
+    $self->write_repo_files if $self->phase eq 'release';
 }
 
 __PACKAGE__->meta->make_immutable;
