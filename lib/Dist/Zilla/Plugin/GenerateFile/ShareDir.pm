@@ -16,7 +16,6 @@ with (
     'Dist::Zilla::Role::AfterRelease',
 );
 
-use Carp 'croak';
 use MooseX::SlurpyConstructor 1.2;
 use Moose::Util 'find_meta';
 use File::ShareDir 'dist_file';
@@ -198,26 +197,13 @@ sub after_release
     $self->_write_file_root($_) for @{ $self->_stashed_files };
 }
 
-# That I have to write this clearly says something is wrong.
-# Appropriated from Dist::Zilla::_write_out_file and then made to work with root
 sub _write_file_root
 {
     my ($self, $file) = @_;
 
     $self->log_debug([ 'writing out %s', $file->name ]);
 
-    my $file_path = path($file->name);
-    my $to        = path($self->zilla->root)->child($file_path);
-    my $to_dir    = $to->parent;
-    $to_dir->mkpath unless -e $to_dir;
-
-    croak "not a directory: $to_dir" unless -d $to_dir;
-
-    $self->log_debug([ 'Overwriting %s', $to ]);
-    # we already encoded the content in munge_file if on older Dist::Zilla
-    $to->spew_raw($file->can('encoded_content') ? $file->encoded_content : $file->content);
-
-    chmod $file->mode, "$to" or croak "couldn't chmod $to: $!";
+    $self->zilla->_write_out_file($file, $self->zilla->root);
 }
 
 __PACKAGE__->meta->make_immutable;
