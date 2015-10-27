@@ -65,12 +65,17 @@ has phase => (
     init_arg => '-phase',
 );
 
-has _stashed_files => (
-    isa      => 'ArrayRef',
-    init_arg => undef,
-    is       => 'ro',
-    lazy     => 1,
-    default  => sub { [] },
+use MooseX::Types::Moose qw(ArrayRef Bool);
+use Moose::Util::TypeConstraints qw(class_type role_type);
+has _repo_files => (
+    isa => ArrayRef[role_type('Dist::Zilla::Role::File')],
+    lazy => 1,
+    default => sub { [] },
+    traits => ['Array'],
+    handles => {
+        __push_repo_file => 'push',
+        _repo_files => 'elements',
+    },
 );
 
 has _extra_args => (
@@ -134,11 +139,12 @@ sub gather_files
     if ($self->location eq 'build')
     {
         $self->add_file($file);
-        return;
     }
-
-    # root eq $self->location
-    push @{ $self->_stashed_files }, $file;
+    else
+    {
+        # root eq $self->location
+        $self->_add_repo_file($file);
+    }
     return;
 }
 
@@ -148,7 +154,7 @@ around munge_files => sub
 
     return $self->$orig(@args) if $self->location eq 'build';
 
-    for my $file (@{ $self->_stashed_files })
+    for my $file ($self->_repo_files)
     {
         if ($file->can('is_bytes') and $file->is_bytes)
         {
@@ -184,26 +190,43 @@ sub munge_file
 sub after_build
 {
     my $self = shift;
-    return unless $self->location eq 'root';
-    return unless $self->phase eq 'build';
-    $self->_write_file_root($_) for @{ $self->_stashed_files };
+    $self->_write_repo_files if $self->phase eq 'build';
 }
 
 sub after_release
 {
     my $self = shift;
-    return unless $self->location eq 'root';
-    return unless $self->phase eq 'release';
-    $self->_write_file_root($_) for @{ $self->_stashed_files };
+    $self->_write_repo_files if $self->phase eq 'release';
 }
 
-sub _write_file_root
-{
+sub _add_repo_file {
     my ($self, $file) = @_;
 
-    $self->log_debug([ 'writing out %s', $file->name ]);
+    my ($pkg, undef, $line) = caller;
+    $file->_set_added_by(sprintf("%s (%s line %s)", $self->plugin_name, $pkg, $line));
 
-    $self->zilla->_write_out_file($file, $self->zilla->root);
+    $self->log_debug([ 'adding file %s', $file->name ]);
+
+    $self->__push_repo_file($file);
+}
+
+use Cwd ();
+sub _repo_root { path(Cwd::getcwd()) }
+
+sub _write_repo_files
+{
+    my $self = shift;
+
+    foreach my $file ($self->_repo_files)
+    {
+        my $filename = path($file->name);
+
+        # sadly, _write_out_file does $build_root->subdir without casting first
+        my $root = Path::Class::dir($filename->is_relative ? $self->_repo_root : '');
+
+        $self->log_debug([ 'writing out %s', $file->name ]);
+        $self->zilla->_write_out_file($file, $root);
+    }
 }
 
 __PACKAGE__->meta->make_immutable;
