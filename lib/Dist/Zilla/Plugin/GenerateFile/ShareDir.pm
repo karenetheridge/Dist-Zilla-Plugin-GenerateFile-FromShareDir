@@ -12,6 +12,7 @@ with (
     'Dist::Zilla::Role::FileGatherer',
     'Dist::Zilla::Role::FileMunger',
     'Dist::Zilla::Role::TextTemplate',
+    'Dist::Zilla::Role::RepoFileInjector',
     'Dist::Zilla::Role::AfterBuild',
     'Dist::Zilla::Role::AfterRelease',
 );
@@ -63,19 +64,6 @@ has phase => (
     lazy => 1,
     default => 'release',
     init_arg => '-phase',
-);
-
-use MooseX::Types::Moose qw(ArrayRef Bool);
-use Moose::Util::TypeConstraints qw(class_type role_type);
-has _repo_files => (
-    isa => ArrayRef[role_type('Dist::Zilla::Role::File')],
-    lazy => 1,
-    default => sub { [] },
-    traits => ['Array'],
-    handles => {
-        __push_repo_file => 'push',
-        _repo_files => 'elements',
-    },
 );
 
 has _extra_args => (
@@ -143,7 +131,7 @@ sub gather_files
     else
     {
         # root eq $self->location
-        $self->_add_repo_file($file);
+        $self->add_repo_file($file);
     }
     return;
 }
@@ -190,43 +178,13 @@ sub munge_file
 sub after_build
 {
     my $self = shift;
-    $self->_write_repo_files if $self->phase eq 'build';
+    $self->write_repo_files if $self->phase eq 'build';
 }
 
 sub after_release
 {
     my $self = shift;
-    $self->_write_repo_files if $self->phase eq 'release';
-}
-
-sub _add_repo_file {
-    my ($self, $file) = @_;
-
-    my ($pkg, undef, $line) = caller;
-    $file->_set_added_by(sprintf("%s (%s line %s)", $self->plugin_name, $pkg, $line));
-
-    $self->log_debug([ 'adding file %s', $file->name ]);
-
-    $self->__push_repo_file($file);
-}
-
-use Cwd ();
-sub _repo_root { path(Cwd::getcwd()) }
-
-sub _write_repo_files
-{
-    my $self = shift;
-
-    foreach my $file ($self->_repo_files)
-    {
-        my $filename = path($file->name);
-
-        # sadly, _write_out_file does $build_root->subdir without casting first
-        my $root = Path::Class::dir($filename->is_relative ? $self->_repo_root : '');
-
-        $self->log_debug([ 'writing out %s', $file->name ]);
-        $self->zilla->_write_out_file($file, $root);
-    }
+    $self->write_repo_files if $self->phase eq 'release';
 }
 
 __PACKAGE__->meta->make_immutable;
