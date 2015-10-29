@@ -68,9 +68,9 @@ cmp_deeply(
                         location => 'build',
                         numero => 'neuf',
                     },
-                    'Dist::Zilla::Role::RepoFileInjector' => {
+                    'Dist::Zilla::Role::RepoFileInjector' => superhashof({
                         version => Dist::Zilla::Role::RepoFileInjector->VERSION,
-                    },
+                    }),
                 }),
                 name => 'GenerateFile::ShareDir',
                 version => Dist::Zilla::Plugin::GenerateFile::ShareDir->VERSION,
