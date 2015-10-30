@@ -6,11 +6,11 @@
 
 =head1 NAME
 
-Dist::Zilla::Plugin::GenerateFile::ShareDir - Create files in the build, based on a template located in a dist sharedir
+Dist::Zilla::Plugin::GenerateFile::ShareDir - Create files in the repository or build, based on a template located in a dist sharedir
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 
@@ -81,14 +81,6 @@ Only relevant when C<-location = root>. When C<build> (the default), the file
 is written on every build operation. When C<release>, it is only written after
 the distribution is released.
 
-=head1 SUPPORT
-
-=for stopwords irc
-
-Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-GenerateFile-ShareDir>
-(or L<bug-Dist-Zilla-Plugin-GenerateFile-ShareDir@rt.cpan.org|mailto:bug-Dist-Zilla-Plugin-GenerateFile-ShareDir@rt.cpan.org>).
-I am also usually active on irc, as 'ether' at C<irc.perl.org>.
-
 =head1 SEE ALSO
 
 =for stopwords templated
@@ -117,6 +109,19 @@ L<[GenerateFile]|Dist::Zilla::Plugin::GenerateFile> - generate a (possibly-templ
 
 =back
 
+=head1 SUPPORT
+
+Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-GenerateFile-ShareDir>
+(or L<bug-Dist-Zilla-Plugin-GenerateFile-ShareDir@rt.cpan.org|mailto:bug-Dist-Zilla-Plugin-GenerateFile-ShareDir@rt.cpan.org>).
+
+There is also a mailing list available for users of this distribution, at
+L<http://dzil.org/#mailing-list>.
+
+There is also an irc channel available for users of this distribution, at
+irc://irc.perl.org/#distzilla.
+
+I am also usually active on irc, as 'ether' at C<irc.perl.org>.
+
 =head1 AUTHOR
 
 Karen Etheridge <ether@cpan.org>
@@ -127,7 +132,7 @@ Karen Etheridge <ether@cpan.org>
 
 Kent Fredric <kentfredric@gmail.com>
 
-=head1 COPYRIGHT AND LICENSE
+=head1 COPYRIGHT AND LICENCE
 
 This software is copyright (c) 2013 by Karen Etheridge.
 
