@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-GenerateFile-ShareDir
 
+{{$NEXT}}
+
 0.007     2015-10-30 03:11:38Z
           - some logic abstracted out to Dist::Zilla::Role::RepoFileInjector
 
