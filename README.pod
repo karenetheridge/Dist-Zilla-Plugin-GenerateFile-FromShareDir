@@ -6,17 +6,17 @@
 
 =head1 NAME
 
-Dist::Zilla::Plugin::GenerateFile::ShareDir - Create files in the repository or build, based on a template located in a dist sharedir
+Dist::Zilla::Plugin::GenerateFile::FromShareDir - Create files in the repository or build, based on a template located in a dist sharedir
 
 =head1 VERSION
 
-version 0.007
+version 0.008
 
 =head1 SYNOPSIS
 
 In your F<dist.ini>:
 
-    [GenerateFile::ShareDir]
+    [GenerateFile::FromShareDir]
     -dist = Dist::Zilla::PluginBundle::Author::ME
     -source_filename = my_data_template.txt
     -destination_filename = examples/my_data.txt
@@ -111,8 +111,8 @@ L<[GenerateFile]|Dist::Zilla::Plugin::GenerateFile> - generate a (possibly-templ
 
 =head1 SUPPORT
 
-Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-GenerateFile-ShareDir>
-(or L<bug-Dist-Zilla-Plugin-GenerateFile-ShareDir@rt.cpan.org|mailto:bug-Dist-Zilla-Plugin-GenerateFile-ShareDir@rt.cpan.org>).
+Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-GenerateFile-FromShareDir>
+(or L<bug-Dist-Zilla-Plugin-GenerateFile-FromShareDir@rt.cpan.org|mailto:bug-Dist-Zilla-Plugin-GenerateFile-FromShareDir@rt.cpan.org>).
 
 There is also a mailing list available for users of this distribution, at
 L<http://dzil.org/#mailing-list>.
