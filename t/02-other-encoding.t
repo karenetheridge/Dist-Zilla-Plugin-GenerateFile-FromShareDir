@@ -38,8 +38,8 @@ my $tzil = Builder->from_config(
 $tzil->chrome->logger->set_debug(1);
 $tzil->build;
 
-my $build_dir = $tzil->tempdir->subdir('build');
-my $file = path($build_dir, 'data', 'useless_file.txt');
+my $build_dir = path($tzil->tempdir)->child('build');
+my $file = $build_dir->child('data', 'useless_file.txt');
 ok(-e $file, 'file created');
 
 my $content = Encode::decode('Latin1', $file->slurp_raw, Encode::FB_CROAK());

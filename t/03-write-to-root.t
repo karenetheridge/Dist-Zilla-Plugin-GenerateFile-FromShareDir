@@ -41,12 +41,12 @@ my $tzil = Builder->from_config(
 $tzil->chrome->logger->set_debug(1);
 $tzil->build;
 
-my $build_dir = $tzil->tempdir->subdir('build');
-my $nonfile = path($build_dir, 'data', 'useless_file.txt');
+my $build_dir = path($tzil->tempdir)->child('build');
+my $nonfile = $build_dir->child('data', 'useless_file.txt');
 ok(!-e $nonfile, 'file not created in build');
 
-my $source_dir = $tzil->tempdir->subdir('source');
-my $file = path($source_dir, 'data', 'useless_file.txt');
+my $source_dir = path($tzil->tempdir)->child('source');
+my $file = $source_dir->child('data', 'useless_file.txt');
 ok(-e $file, 'file created in source');
 
 my $content = $file->slurp_utf8;
