@@ -25,7 +25,7 @@ my $tzil = Builder->from_config(
         add_files => {
             path(qw(source dist.ini)) => simple_ini(
                 'MetaConfig',
-                [ 'GenerateFile::ShareDir' => {
+                [ 'GenerateFile::FromShareDir' => {
                     '-dist' => 'Some-Other-Dist',
                     '-source_filename' => 'template.txt',
                     '-destination_filename' => 'data/useless_file.txt',
@@ -47,7 +47,7 @@ my $content = $file->slurp_utf8;
 
 my $zilla_version = Dist::Zilla->VERSION;
 
-like($content, qr/^This file was generated with Dist::Zilla::Plugin::GenerateFile::ShareDir /, '$plugin is passed to the template');
+like($content, qr/^This file was generated with Dist::Zilla::Plugin::GenerateFile::FromShareDir /, '$plugin is passed to the template');
 like($content, qr/Dist::Zilla $zilla_version/, '$zilla is passed to the template');
 like($content, qr/Some-Other-Dist-2.0/, 'dist name can be fetched from the $plugin object');
 like($content, qr/Le numéro de Maurice Richard est neuf./, 'arbitrary args are passed to the template');
@@ -58,9 +58,9 @@ cmp_deeply(
     superhashof({
         x_Dist_Zilla => superhashof({
             plugins => supersetof({
-                class => 'Dist::Zilla::Plugin::GenerateFile::ShareDir',
+                class => 'Dist::Zilla::Plugin::GenerateFile::FromShareDir',
                 config => superhashof({
-                    'Dist::Zilla::Plugin::GenerateFile::ShareDir' => {
+                    'Dist::Zilla::Plugin::GenerateFile::FromShareDir' => {
                         dist => 'Some-Other-Dist',
                         encoding => 'UTF-8',
                         source_filename => 'template.txt',
@@ -72,8 +72,8 @@ cmp_deeply(
                         version => Dist::Zilla::Role::RepoFileInjector->VERSION,
                     }),
                 }),
-                name => 'GenerateFile::ShareDir',
-                version => Dist::Zilla::Plugin::GenerateFile::ShareDir->VERSION,
+                name => 'GenerateFile::FromShareDir',
+                version => Dist::Zilla::Plugin::GenerateFile::FromShareDir->VERSION,
             }),
         }),
     }),

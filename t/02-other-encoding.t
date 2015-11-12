@@ -23,7 +23,7 @@ my $tzil = Builder->from_config(
     {
         add_files => {
             path(qw(source dist.ini)) => simple_ini(
-                [ 'GenerateFile::ShareDir' => {
+                [ 'GenerateFile::FromShareDir' => {
                     '-dist' => 'Some-Other-Dist',
                     '-encoding' => 'Latin1',
                     '-source_filename' => 'template_latin1.txt',
@@ -46,7 +46,7 @@ my $content = Encode::decode('Latin1', $file->slurp_raw, Encode::FB_CROAK());
 
 my $zilla_version = Dist::Zilla->VERSION;
 
-like($content, qr/^This file was generated with Dist::Zilla::Plugin::GenerateFile::ShareDir /, '$plugin is passed to the template');
+like($content, qr/^This file was generated with Dist::Zilla::Plugin::GenerateFile::FromShareDir /, '$plugin is passed to the template');
 like($content, qr/Dist::Zilla $zilla_version/, '$zilla is passed to the template');
 like($content, qr/Some-Other-Dist-2.0/, 'dist name can be fetched from the $plugin object');
 like($content, qr/Le numéro de Maurice Richard est neuf./, 'arbitrary args are passed to the template');

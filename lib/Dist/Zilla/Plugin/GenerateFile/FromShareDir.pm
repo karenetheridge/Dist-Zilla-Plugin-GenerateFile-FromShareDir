@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-package Dist::Zilla::Plugin::GenerateFile::ShareDir;
+package Dist::Zilla::Plugin::GenerateFile::FromShareDir;
 # ABSTRACT: Create files in the repository or build, based on a template located in a dist sharedir
 # KEYWORDS: plugin distribution generate create file sharedir template
 # vim: set ts=8 sts=4 sw=4 tw=115 et :
@@ -205,7 +205,7 @@ __END__
 
 In your F<dist.ini>:
 
-    [GenerateFile::ShareDir]
+    [GenerateFile::FromShareDir]
     -dist = Dist::Zilla::PluginBundle::Author::ME
     -source_filename = my_data_template.txt
     -destination_filename = examples/my_data.txt

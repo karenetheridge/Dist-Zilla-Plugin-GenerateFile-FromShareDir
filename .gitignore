@@ -4,3 +4,5 @@
 /.latest
 /Dist-Zilla-Plugin-GenerateFile-ShareDir-*/
 /Dist-Zilla-Plugin-GenerateFile-ShareDir-*.tar.gz
+/Dist-Zilla-Plugin-GenerateFile-FromShareDir-*/
+/Dist-Zilla-Plugin-GenerateFile-FromShareDir-*.tar.gz
