@@ -1,6 +1,6 @@
 Revision history for Dist-Zilla-Plugin-GenerateFile-FromShareDir
 
-{{$NEXT}}
+0.009     2015-11-14 02:15:03Z
           - added missing test prerequisite that was introduced in 0.008
 
 0.008     2015-11-12 03:36:14Z
