@@ -28,7 +28,7 @@ $code =~ s/'GenerateFile::FromShareDir'/'GenerateFile::ShareDir'/g;
 $code =~ s/^((\s+)dist => '[^']+',)$/$1\n$2version => Dist::Zilla::Plugin::GenerateFile::FromShareDir->VERSION,/m,
 
 $code =~ s/^(my \$tzil = .*\n)/$begin_warnings\n$1/m;
-$code =~ s/done_testing;/$end_warnings\nhad_no_warnings;\ndone_testing;/;
+$code =~ s/done_testing;/$end_warnings\nhad_no_warnings if \$ENV\{AUTHOR_TESTING\};\ndone_testing;/;
 
 eval $code;
 die $@ if $@;
