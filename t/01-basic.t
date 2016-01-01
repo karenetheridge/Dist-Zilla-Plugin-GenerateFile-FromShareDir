@@ -41,7 +41,11 @@ $tzil->build;
 
 my $build_dir = path($tzil->tempdir)->child('build');
 my $file = $build_dir->child('data', 'useless_file.txt');
-ok(-e $file, 'file created');
+ok(-e $file, 'file created in build');
+
+my $source_dir = path($tzil->tempdir)->child('source');
+my $nonfile = $source_dir->child('data', 'useless_file.txt');
+ok(!-e $nonfile, 'file not created in source');
 
 my $content = $file->slurp_utf8;
 
