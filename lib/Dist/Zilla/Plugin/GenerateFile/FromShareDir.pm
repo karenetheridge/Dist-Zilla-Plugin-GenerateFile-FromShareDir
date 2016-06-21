@@ -12,7 +12,7 @@ with (
     'Dist::Zilla::Role::FileGatherer',
     'Dist::Zilla::Role::FileMunger',
     'Dist::Zilla::Role::TextTemplate',
-    'Dist::Zilla::Role::RepoFileInjector',
+    'Dist::Zilla::Role::RepoFileInjector' => { -version => '0.006' },
     'Dist::Zilla::Role::AfterBuild',
     'Dist::Zilla::Role::AfterRelease',
 );
