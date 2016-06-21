@@ -62,7 +62,7 @@ has location => (
 has phase => (
     is => 'ro', isa => enum([ qw(build release) ]),
     lazy => 1,
-    default => 'release',
+    default => 'build',
     init_arg => '-phase',
 );
 
@@ -126,6 +126,15 @@ sub gather_files
 
     if ($self->location eq 'build')
     {
+        if ($self->phase eq 'release')
+        {
+            # we can't generate a file only in the release without doing it now,
+            # which would add it for all builds. Consequently this config combo is
+            # nonsensical and suggests the user is misunderstanding something.
+            $self->log('nonsensical and impossible combination of configs: -location = build, -phase = release');
+            return;
+        }
+
         $self->add_file($file);
     }
     else

@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-GenerateFile-FromShareDir
 
 {{$NEXT}}
+          - fixed the default value for "-phase" option, and added a check for
+            invalid config combinations
 
 0.009     2015-11-14 02:15:03Z
           - added missing test prerequisite that was introduced in 0.008
