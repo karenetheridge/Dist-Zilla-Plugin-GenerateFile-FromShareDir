@@ -5,7 +5,7 @@ package Dist::Zilla::Plugin::GenerateFile::FromShareDir;
 # ABSTRACT: Create files in the repository or in the build, based on a template located in a dist sharedir
 # KEYWORDS: plugin distribution generate create file sharedir template
 
-our $VERSION = '0.011';
+our $VERSION = '0.012';
 
 use Moose;
 with (
