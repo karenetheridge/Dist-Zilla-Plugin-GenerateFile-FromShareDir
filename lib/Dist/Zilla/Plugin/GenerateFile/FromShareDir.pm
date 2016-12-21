@@ -111,8 +111,16 @@ sub gather_files
 {
     my $self = shift;
 
-    # this should die if the file does not exist
-    my $file_path = dist_file($self->dist, $self->source_filename);
+    my $file_path;
+    if ($self->dist eq $self->zilla->name)
+    {
+        $file_path = $self->zilla->root->child('share', $self->source_filename);
+    }
+    else
+    {
+        # this should die if the file does not exist
+        $file_path = dist_file($self->dist, $self->source_filename);
+    }
 
     my $content = path($file_path)->slurp_raw;
     $content = Encode::decode($self->encoding, $content, Encode::FB_CROAK());
