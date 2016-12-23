@@ -10,7 +10,7 @@ Dist::Zilla::Plugin::GenerateFile::FromShareDir - Create files in the repository
 
 =head1 VERSION
 
-version 0.012
+version 0.013
 
 =head1 SYNOPSIS
 
@@ -126,11 +126,21 @@ I am also usually active on irc, as 'ether' at C<irc.perl.org>.
 
 Karen Etheridge <ether@cpan.org>
 
-=head1 CONTRIBUTOR
+=head1 CONTRIBUTORS
 
-=for stopwords Kent Fredric
+=for stopwords Dave Rolsky Kent Fredric
+
+=over 4
+
+=item *
+
+Dave Rolsky <autarch@urth.org>
+
+=item *
 
 Kent Fredric <kentfredric@gmail.com>
+
+=back
 
 =head1 COPYRIGHT AND LICENCE
 
