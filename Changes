@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-GenerateFile-FromShareDir
 
+{{$NEXT}}
+
 0.013     2016-12-23 01:10:31Z
           - When building the a dist that matches the name of the dist which
             has the share dir, we look in the source of the sharedir for the
