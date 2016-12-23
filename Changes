@@ -2,11 +2,11 @@ Revision history for Dist-Zilla-Plugin-GenerateFile-FromShareDir
 
 {{$NEXT}}
           - When building the a dist that matches the name of the dist which
-            has the share dir, we look in $self->zilla->root for the file
-            rather than in an installed share dir. This fixes an issue where a
-            bundle that uses this plugin cannot be built until the bundle is
-            installed, but you can't install it because you can't build
-            it. (Dave Rolsky, PR#2, RT#119340)
+            has the share dir, we look in the source of the sharedir for the
+            file rather than in an installed sharedir. This fixes an issue
+            where a bundle that uses this plugin cannot be built until the
+            bundle is installed, but you can't install it because you can't
+            build it. (Dave Rolsky, PR#2, RT#119340)
 
 0.012     2016-06-22 03:38:43Z
           - declare missing test prereq
