@@ -124,6 +124,8 @@ sub gather_files
         $file_path = dist_file($self->dist, $self->source_filename);
     }
 
+    $self->log_debug([ 'using template in %s', $file_path ]);
+
     my $content = path($file_path)->slurp_raw;
     $content = Encode::decode($self->encoding, $content, Encode::FB_CROAK());
 

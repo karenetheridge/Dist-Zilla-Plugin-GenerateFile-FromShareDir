@@ -75,6 +75,12 @@ cmp_deeply(
 )
 or diag 'got distmeta: ', explain $tzil->distmeta;
 
+cmp_deeply(
+    $tzil->log_messages,
+    supersetof('[GenerateFile::FromShareDir] using template in share/template.txt'),
+    'logged the source of the template file',
+);
+
 diag 'got log messages: ', explain $tzil->log_messages
     if not Test::Builder->new->is_passing;
 
