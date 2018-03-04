@@ -37,7 +37,6 @@ is(
     undef,
     'build proceeds normally',
 );
-diag 'got log messages: ', explain $tzil->log_messages;
 
 my $build_dir = path($tzil->tempdir)->child('build');
 my $file = $build_dir->child('data', 'useless_file.txt');
