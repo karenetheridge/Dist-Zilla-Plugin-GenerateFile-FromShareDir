@@ -115,7 +115,7 @@ sub gather_files
     if ($self->dist eq $self->zilla->name)
     {
         if (my $sharedir = $self->zilla->_share_dir_map->{dist}) {
-            $file_path = path($sharedir, $self->source_filename)->stringify;
+            $file_path = path($self->zilla->root, $sharedir, $self->source_filename)->stringify;
         }
     }
     else

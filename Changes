@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-GenerateFile-FromShareDir
 
 {{$NEXT}}
+          - fix for Dist::Zilla 7: ensure that the proper directory is used
+            for locating the distribution sharedir
 
 0.013     2016-12-23 01:10:31Z
           - When building a distribution that matches the name of the
