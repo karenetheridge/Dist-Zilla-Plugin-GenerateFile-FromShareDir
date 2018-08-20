@@ -165,11 +165,6 @@ around munge_files => sub
 
     for my $file ($self->_repo_files)
     {
-        if ($file->can('is_bytes') and $file->is_bytes)
-        {
-            $self->log_debug([ '%s has \'bytes\' encoding, skipping...', $file->name ]);
-            next;
-        }
         $self->munge_file($file);
     }
 };
@@ -179,6 +174,13 @@ sub munge_file
     my ($self, $file) = @_;
 
     return unless $file->name eq $self->filename;
+
+    if ($file->can('is_bytes') and $file->is_bytes)
+    {
+        $self->log_debug([ '%s has \'bytes\' encoding, skipping...', $file->name ]);
+        return;
+    }
+
     $self->log_debug([ 'updating contents of %s in memory', $file->name ]);
 
     my $content = $self->fill_in_string(
