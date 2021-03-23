@@ -111,21 +111,21 @@ sub gather_files
 {
     my $self = shift;
 
-    my $file_path;
-    if ($self->dist eq $self->zilla->name)
-    {
+    my $file_path = eval { dist_file($self->dist, $self->source_filename) };
+
+    if (not $file_path) {
+      if ($self->dist eq $self->zilla->name) {
         if (my $sharedir = $self->zilla->_share_dir_map->{dist}) {
-            $file_path = path($self->zilla->root, $sharedir, $self->source_filename)->stringify;
+          $file_path = path($self->zilla->root, $sharedir, $self->source_filename)->stringify;
         }
+      }
+
+      $self->log_fatal('cannot find sharedir!') if not defined $file_path;
     }
-    else
-    {
-        # this should die if the file does not exist
-        $file_path = dist_file($self->dist, $self->source_filename);
-    }
+
+    $self->log_fatal([ 'cannot find %s', $file_path ]) if not -e $file_path;
 
     $self->log_debug([ 'using template in %s', $file_path ]);
-
     my $content = path($file_path)->slurp_raw;
     $content = Encode::decode($self->encoding, $content, Encode::FB_CROAK());
 
