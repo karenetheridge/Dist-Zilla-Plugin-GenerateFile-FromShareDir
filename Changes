@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-GenerateFile-FromShareDir
 
 {{$NEXT}}
+          - removed Dist::Zilla::Plugin::GenerateFile::ShareDir, deprecated
+            since version 0.008
 
 0.014     2018-05-01 04:58:42Z
           - fix for Dist::Zilla 7: ensure that the proper directory is used
