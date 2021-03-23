@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-GenerateFile-FromShareDir
 
+{{$NEXT}}
+
 0.015     2021-03-23 20:05:21Z
           - removed Dist::Zilla::Plugin::GenerateFile::ShareDir, deprecated
             since version 0.008
