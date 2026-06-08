@@ -127,7 +127,7 @@ sub gather_files
 
     $self->log_debug([ 'using template in %s', $file_path ]);
     my $content = path($file_path)->slurp_raw;
-    $content = Encode::decode($self->encoding, $content, Encode::FB_CROAK());
+    $content = Encode::decode($self->encoding, $content, Encode::DIE_ON_ERR);
 
     require Dist::Zilla::File::InMemory;
     my $file = Dist::Zilla::File::InMemory->new(
@@ -193,7 +193,7 @@ sub munge_file
     );
 
     # older Dist::Zilla wrote out all files :raw, so we need to encode manually here.
-    $content = Encode::encode($self->encoding, $content, Encode::FB_CROAK()) if not $file->can('encoded_content');
+    $content = Encode::encode($self->encoding, $content, Encode::DIE_ON_ERR) if not $file->can('encoded_content');
 
     $file->content($content);
 }
