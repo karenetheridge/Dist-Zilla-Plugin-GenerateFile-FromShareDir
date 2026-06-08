@@ -218,7 +218,7 @@ __END__
 
 =pod
 
-=for Pod::Coverage::TrustPod
+=for Pod::Coverage
     gather_files
     munge_file
     after_build
