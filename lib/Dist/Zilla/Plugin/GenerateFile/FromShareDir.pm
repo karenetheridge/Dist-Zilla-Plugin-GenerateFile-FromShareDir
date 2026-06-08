@@ -229,7 +229,7 @@ __END__
 In your F<dist.ini>:
 
     [GenerateFile::FromShareDir]
-    -dist = Dist::Zilla::PluginBundle::Author::ME
+    -dist = Dist-Zilla-PluginBundle-Author-ME
     -source_filename = my_data_template.txt
     -destination_filename = examples/my_data.txt
     key1 = value to pass to template
