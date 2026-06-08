@@ -17,7 +17,6 @@ with (
     'Dist::Zilla::Role::AfterRelease',
 );
 
-use MooseX::SlurpyConstructor 1.2;
 use Moose::Util 'find_meta';
 use File::ShareDir 'dist_file';
 use Path::Tiny 0.04;
@@ -68,12 +67,10 @@ has phase => (
 
 has _extra_args => (
     isa => 'HashRef[Str]',
-    init_arg => undef,
     lazy => 1,
     default => sub { {} },
     traits => ['Hash'],
     handles => { _extra_args => 'elements' },
-    slurpy => 1,
 );
 
 around BUILDARGS => sub
@@ -84,7 +81,13 @@ around BUILDARGS => sub
     my $args = $class->$orig(@_);
     $args->{'-destination_filename'} = delete $args->{'-filename'} if exists $args->{'-filename'};
 
-    return $args;
+    my %extra_args = %$args;
+    delete @extra_args{qw(plugin_name zilla -dist -destination_filename -source_filename -encoding -location -phase)};
+
+    return +{
+        %$args,
+        _extra_args => \%extra_args,
+    };
 };
 
 around dump_config => sub
